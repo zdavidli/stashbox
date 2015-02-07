@@ -1,5 +1,5 @@
 import os
-import dropbox
+from dropbox import client, rest, session
 
 for dirname, dirnames, filenames in os.walk('.'):
     # print path to all subdirectories first.
