@@ -32,16 +32,16 @@ def DelDir(curDir):
                 #delete it!
                 print("should be deleting!")
                 dropboxFilename= ""
-                words = file.split("/")
-                shouldAdd = false
+                words = filename.split("/")
+                shouldAdd = False
                 for word in words:
                     if word == "Dropbox":
                         shouldAdd = True
                         continue
                     if shouldAdd:
                         dropboxFilename+= "/" + word
-                saveToDropbox(file, dropboxFilename)
-                os.remove(file)
+                #saveToDropbox(file, dropboxFilename)
+                os.remove(curDir + "/" + filename)
             else:
                 print "should not delete " + filename
         for dirname in directories:
@@ -70,7 +70,7 @@ def shouldDel(file):
     accessTime = os.stat(file).st_atime
     if (curTime - accessTime < DEL_AGE):
         return False
-    elif ((BlackList.contains(file)) or (WhiteList_zip.contains(file))):
+    elif ((file in BlackList) or (file in WhiteList_zip)):
         return False
     return True
 
