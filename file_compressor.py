@@ -11,7 +11,6 @@ WhiteList_del = []
 BlackList = []
 
 curTime = datetime.datetime.now()
-accessTime = os.stat(file).st_atime
 ZIP_AGE = 120
 DEl_AGE = 300
 
@@ -22,11 +21,6 @@ RunInterval = 600
 
 __RUN = True
 
-loadData()
-for each entry in WhiteList_delete:
-    DelDir(entry)
-for each entry in WhiteList_zip:
-    ZipDir(entry)
 
 def DelDir(curDir):
     for root, directories, files in os.walk(curDir):
@@ -56,8 +50,9 @@ def ZipDir(curDir):
         for filename in files:
             if(shouldZip(filename)):
                 #zip it
+                print "shouldzip"
         for dirname in directories:
-            if(dirname in WhiteList_zip)
+            if(dirname in WhiteList_zip):
                 WhiteList_zip.remove(dirname)
             if(dirname not in BlackList and dirname not in WhiteList_del):
                 ZipDir(dirname)
@@ -65,6 +60,7 @@ def ZipDir(curDir):
 #checks if the file should be deleted, default is True
 #False if: not a recognized file ending, or on a list other than WhiteList_Del
 def shouldDel(file):
+    accessTime = os.stat(file).st_atime
     if (curTime - accessTime < DEL_AGE):
         return False
     elif ((BlackList.contains(file)) or (WhiteList_zip.contains(file))):
@@ -72,6 +68,7 @@ def shouldDel(file):
     return True
 
 def shouldZip(file):
+    accessTime = os.stat(file).st_atime
     if (curTime - accessTime < ZIP_AGE):
         return False
     elif ((BlackList.contains(file)) or (WhiteList_del.contains(file))):
@@ -80,13 +77,17 @@ def shouldZip(file):
 
 def loadData():
     #load each global var from disk
-    WhiteList_del = loadObject("WhiteList_del.p")
-    WhiteList_zip = loadObject("WhiteList_zip.p")
+    WhiteList_del = loadObject(".file_compress.data/.WhiteList_del.p")
+    WhiteList_zip = loadObject(".file_compress.data/.WhiteList_zip.p")
+    BlackList = loadObject(".file_compress.data/.BlackList.p")
 
-    ZipFileEndings = loadObject("ZipFileEndings.p")
-    DelFileEndings = loadObject("DelFileEndings.p")
+    ZipFileEndings = loadObject(".file_compress.data/.ZipFileEndings.p")
+    DelFileEndings = loadObject(".file_compress.data/.DelFileEndings.p")
 
+    ZIP_AGE = loadObject(".file_compress.data/.ZIP_AGE.p")
+    DEL_AGE = loadObject(".file_compress.data/.DEL_AGE.p")
 
+    __RUN = loadObject(".file_compress.data/.__RUN.p")
 
 def loadObject(filename):
     #will this correctly load the object?
@@ -95,3 +96,15 @@ def loadObject(filename):
             return pickle.load(input)
     except IOError:
         print "File does not exist yet"   
+
+
+
+
+
+loadData()
+'''
+for each entry in WhiteList_delete:
+    DelDir(entry)
+for each entry in WhiteList_zip:
+    ZipDir(entry)
+'''
