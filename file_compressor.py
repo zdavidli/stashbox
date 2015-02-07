@@ -36,7 +36,7 @@ def DelDir(curDir):
         for dirname in directories:
             if(dirname in WhiteList_del):
                 WhiteList_del.remove(dirname)
-            if(dirname not in BlackList and dirname not in WhiteList_zip):
+            elif(dirname not in BlackList and dirname not in WhiteList_zip):
                 DelDir(dirname)
 
 #similar method for ZipDir
