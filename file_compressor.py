@@ -46,7 +46,13 @@ def ZipDir(curDir):
 #checks if the file should be deleted, default is True
 #False if: not a recognized file ending, or on a list other than WhiteList_Del
 def shouldDel(file):
-    if (time.ctime(os.stat('my_path/test.txt').st_atime) < 
+    curTime = datetime.datetime.now()
+    accessTime = os.stat(file).st_atime
+    if (curTime - accessTime < DEL_AGE):
+        return False
+
+    if ((file in BlackList) or (file in WhiteList_Zip.contains)):
+        return False
 
 def shouldZip(file):
 
