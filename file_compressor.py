@@ -55,7 +55,7 @@ def DelDir(curDir):
 def ZipDir(curDir):
     for root, directories, files in os.walk(curDir):
         for filename in files:
-            if(shouldZip(filename) and (not filename.endswith("zip"))): # ignores already zipped files
+            if(shouldZip(curDir + "/" + filename)):
                 shutil.make_archive(filename, "zip", os.getcwd()) # creates a zip file
                 print "shouldzip"
                 os.remove(filename) # deletes original copy of files
@@ -80,7 +80,9 @@ def shouldZip(file):
     accessTime = os.stat(file).st_atime
     if (curTime - accessTime < ZIP_AGE):
         return False
-    elif ((BlackList.contains(file)) or (WhiteList_del.contains(file))):
+    elif (file.endswith("zip")): # we don't want to look at already zipped files!
+        return False
+    elif ((file in BlackList) or (file in WhiteList_del)):
         return False
     return True
 
