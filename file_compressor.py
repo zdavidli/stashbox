@@ -33,6 +33,17 @@ def DelDir(curDir):
         for filename in files:
             if(shouldDel(filename));
                 #delete it!
+                     #delete the file below this
+                dropboxFilename= ""
+                words = file.split("/")
+                shouldAdd = false
+                for word in words:
+                if word == "Dropbox":
+                    shouldAdd = true
+                if shouldAdd:
+                    dropboxFilename+= "/" + word
+                saveToDropbox(file, dropboxFilename)
+                
         for dirname in directories:
             if(dirname in WhiteList_del):
                 WhiteList_del.remove(dirname)
