@@ -29,17 +29,26 @@ for each entry in WhiteList_zip:
     ZipDir(entry)
 
 def DelDir(curDir):
-
-    for each file in curDir: #NEED SOME WAY OF ITERATING HERE
-        if (shouldDel(file)):
-            #delete the file
-
-    for each dir in curDir: #NEED ANOTHER WAY OF ITERATING HERE
-    	if (WhiteList_del.contains(dir)):
-    		WhiteList_del.remove(dir)
-
-        if (!BlackList.contains(dir) and !WhiteList_zip.contains(dir)):
-            DelDir(dir)
+    for root, directories, files in os.walk(curDir):
+        for filename in files:
+            if(shouldDel(filename));
+                #delete it!
+                     #delete the file below this
+                dropboxFilename= ""
+                words = file.split("/")
+                shouldAdd = false
+                for word in words:
+                if word == "Dropbox":
+                    shouldAdd = true
+                if shouldAdd:
+                    dropboxFilename+= "/" + word
+                saveToDropbox(file, dropboxFilename)
+                
+        for dirname in directories:
+            if(dirname in WhiteList_del):
+                WhiteList_del.remove(dirname)
+            if(dirname not in BlackList and dirname not in WhiteList_zip):
+                DelDir(dirname)
 
 #similar method for ZipDir
 def ZipDir(curDir):
@@ -50,14 +59,14 @@ def ZipDir(curDir):
 def shouldDel(file):
     if (curTime - accessTime < DEL_AGE):
         return False
-    if ((BlackList.contains(file)) or (WhiteList_zip.contains(file))):
+    elif ((BlackList.contains(file)) or (WhiteList_zip.contains(file))):
         return False
     return True
 
 def shouldZip(file):
     if (curTime - accessTime < ZIP_AGE):
         return False
-    if ((BlackList.contains(file)) or (WhiteList_del.contains(file))):
+    elif ((BlackList.contains(file)) or (WhiteList_del.contains(file))):
         return False
     return True
 
