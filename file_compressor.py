@@ -4,6 +4,19 @@ Created on Jan 26, 2015
 '''
 
 #data
+WhiteList_zip = []
+WhiteList_del = []
+BlackList = []
+
+ZIP_AGE = 120
+DEl_AGE = 300
+
+ZipFileEndings = []
+DelFileEndings = []
+
+RunInterval = 600
+
+__RUN = True
 
 loadData()
 for each entry in WhiteList_delete:
@@ -23,6 +36,8 @@ def DelDir(curDir):
 def ZipDir(curDir):
 
 
+#checks if the file should be deleted, default is True
+    #False if: not a recognized file ending, or on a list other than WhiteList_Del
 def shouldDel(file):
     
 
