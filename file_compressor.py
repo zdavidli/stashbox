@@ -32,7 +32,7 @@ def DelDir(curDir):
             if(shouldDel(curDir+"/"+filename)):
                 #delete it!
                 print("should be deleting!")
-                '''dropboxFilename= ""
+                dropboxFilename= ""
                 words = filename.split("/")
                 shouldAdd = False
                 for word in words:
@@ -41,7 +41,7 @@ def DelDir(curDir):
                         continue
                     if shouldAdd:
                         dropboxFilename+= "/" + word
-                saveToDropbox(curDir + "/" + filename, "dropboxFilename")'''
+                saveToDropbox(curDir + "/" + filename, "dropboxFilename")
                 os.remove(curDir + "/" + filename)
             else:
                 print "should not delete " + filename
@@ -135,8 +135,11 @@ def saveToDropbox(obj, uploadPath):
 
 def setupAuthentication():
     global client
-    app_key = "9s7hb21rv9udehc"
-    app_secret = "d0grqcxuf3rnzmb"
+    #app_key = "9s7hb21rv9udehc"
+    #app_secret = "d0grqcxuf3rnzmb"
+
+    app_key = "ht7nrglcmelcuhu"
+    app_secret = "rmjtru5i7es7reu"
 
     flow = dropbox.client.DropboxOAuth2FlowNoRedirect(app_key, app_secret)
     # Have the user sign in and authorize this token
@@ -157,10 +160,10 @@ global client
 authenticated = False;
 authenticated = loadObject("saveAuth.p")
 print authenticated
-'''if (not (authenticated == True)):
+if (not (authenticated == True)):
     setupAuthentication()
     authenticated = True;
-    saveObject(authenticated, "saveAuth.p")'''
+    saveObject(authenticated, "saveAuth.p")
 client = loadObject("saveClient.p")
 print len(WhiteList_del)
 for entry in WhiteList_del:
