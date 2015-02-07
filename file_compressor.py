@@ -3,7 +3,7 @@
 Created on Jan 26, 2015
 '''
 
-import os, time, datetime, pickle
+import os, time, datetime, pickle, shutil
 
 #data
 global WhiteList_zip
@@ -55,7 +55,7 @@ def ZipDir(curDir):
     for root, directories, files in os.walk(curDir):
         for filename in files:
             if(shouldZip(filename)):
-                #zip it
+                shutil.make_archive(filename, "zip", os.getcwd())
                 print "shouldzip"
         for dirname in directories:
             if(dirname in WhiteList_zip):
