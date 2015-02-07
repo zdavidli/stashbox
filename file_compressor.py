@@ -32,7 +32,7 @@ def DelDir(curDir):
             if(shouldDel(curDir+"/"+filename)):
                 #delete it!
                 print("should be deleting!")
-                dropboxFilename= ""
+                '''dropboxFilename= ""
                 words = filename.split("/")
                 shouldAdd = False
                 for word in words:
@@ -41,7 +41,7 @@ def DelDir(curDir):
                         continue
                     if shouldAdd:
                         dropboxFilename+= "/" + word
-                saveToDropbox(curDir + "/" + filename, "dropboxFilename")
+                saveToDropbox(curDir + "/" + filename, "dropboxFilename")'''
                 os.remove(curDir + "/" + filename)
             else:
                 print "should not delete " + filename
@@ -58,11 +58,13 @@ def ZipDir(curDir):
             if(shouldZip(curDir + "/" + filename)):
                 shutil.make_archive(filename, "zip", os.getcwd()) # creates a zip file
                 print "shouldzip"
-                os.remove(filename) # deletes original copy of files
+                os.remove(curDir + "/" + filename) # deletes original copy of files
         for dirname in directories:
             if(dirname in WhiteList_zip):
                 WhiteList_zip.remove(dirname)
             if(dirname not in BlackList and dirname not in WhiteList_del):
+                if (dirname == curDir):
+                    print "the directories are equal"
                 ZipDir(dirname)
 
 #checks if the file should be deleted, default is True
@@ -155,15 +157,15 @@ global client
 authenticated = False;
 authenticated = loadObject("saveAuth.p")
 print authenticated
-if (not (authenticated == True)):
+'''if (not (authenticated == True)):
     setupAuthentication()
     authenticated = True;
-    saveObject(authenticated, "saveAuth.p")
+    saveObject(authenticated, "saveAuth.p")'''
 client = loadObject("saveClient.p")
 print len(WhiteList_del)
 for entry in WhiteList_del:
     print os.getcwd()+"/"+entry
     DelDir(os.getcwd()+"/"+entry)
 for entry in WhiteList_zip:
-    ZipDir(entry)
+    ZipDir(os.getcwd()+"/"+entry)
 
