@@ -10,6 +10,8 @@ WhiteList_zip = []
 WhiteList_del = []
 BlackList = []
 
+curTime = datetime.datetime.now()
+accessTime = os.stat(file).st_atime
 ZIP_AGE = 120
 DEl_AGE = 300
 
@@ -46,16 +48,18 @@ def ZipDir(curDir):
 #checks if the file should be deleted, default is True
 #False if: not a recognized file ending, or on a list other than WhiteList_Del
 def shouldDel(file):
-    curTime = datetime.datetime.now()
-    accessTime = os.stat(file).st_atime
     if (curTime - accessTime < DEL_AGE):
         return False
-
-    if ((file in BlackList) or (file in WhiteList_Zip.contains)):
+    if ((BlackList.contains(file)) or (WhiteList_zip.contains(file))):
         return False
+    return True
 
 def shouldZip(file):
-
+    if (curTime - accessTime < ZIP_AGE):
+        return False
+    if ((BlackList.contains(file)) or (WhiteList_del.contains(file))):
+        return False
+    return True
 
 def loadData():
     #load each global var from disk
