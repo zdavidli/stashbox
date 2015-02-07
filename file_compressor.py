@@ -37,7 +37,6 @@ def DelDir(curDir):
     		WhiteList_del.remove(dir)
 
         if (!BlackList.contains(dir) and !WhiteList_zip.contains(dir)):
-
             DelDir(dir)
 
 #similar method for ZipDir
@@ -53,3 +52,4 @@ def shouldZip(file):
 
 
 def loadData():
+    #load each global var from disk
