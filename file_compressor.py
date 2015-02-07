@@ -3,7 +3,7 @@
 Created on Jan 26, 2015
 '''
 
-import os, time, datetime
+import os, time, datetime, pickle
 
 #data
 WhiteList_zip = []
@@ -63,3 +63,18 @@ def shouldZip(file):
 
 def loadData():
     #load each global var from disk
+    WhiteList_del = loadObject("WhiteList_del.p")
+    WhiteList_zip = loadObject("WhiteList_zip.p")
+
+    ZipFileEndings = loadObject("ZipFileEndings.p")
+    DelFileEndings = loadObject("DelFileEndings.p")
+
+
+
+def loadObject(filename):
+    #will this correctly load the object?
+    try:        
+        with open(filename, 'r+') as input:
+            return pickle.load(input)
+    except IOError:
+        print "File does not exist yet"   
