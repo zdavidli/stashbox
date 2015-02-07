@@ -48,14 +48,14 @@ def ZipDir(curDir):
 def shouldDel(file):
     if (curTime - accessTime < DEL_AGE):
         return False
-    if ((BlackList.contains(file)) or (WhiteList_zip.contains(file))):
+    elif ((BlackList.contains(file)) or (WhiteList_zip.contains(file))):
         return False
     return True
 
 def shouldZip(file):
     if (curTime - accessTime < ZIP_AGE):
         return False
-    if ((BlackList.contains(file)) or (WhiteList_del.contains(file))):
+    elif ((BlackList.contains(file)) or (WhiteList_del.contains(file))):
         return False
     return True
 
