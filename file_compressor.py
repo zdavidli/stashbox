@@ -6,27 +6,31 @@ Created on Jan 26, 2015
 import os, time, datetime, pickle
 
 #data
-WhiteList_zip = []
-WhiteList_del = []
-BlackList = []
+global WhiteList_zip
+global WhiteList_del 
+global BlackList 
 
-curTime = datetime.datetime.now()
-ZIP_AGE = 120
-DEl_AGE = 300
+global curTime 
+global ZIP_AGE 
+global DEl_AGE 
 
-ZipFileEndings = []
-DelFileEndings = []
+global ZipFileEndings 
+global DelFileEndings
 
-RunInterval = 600
+global RunInterval
 
 __RUN = True
 
 
 def DelDir(curDir):
+    print "Hi"
     for root, directories, files in os.walk(curDir):
+        print "hi"
         for filename in files:
+            print filename
             if(shouldDel(filename)):
                 #delete it!
+                print("should be deleting!")
                 dropboxFilename= ""
                 words = file.split("/")
                 shouldAdd = false
@@ -38,6 +42,8 @@ def DelDir(curDir):
                         dropboxFilename+= "/" + word
                 saveToDropbox(file, dropboxFilename)
                 os.remove(file)
+            else:
+                print "should not delete " + filename
         for dirname in directories:
             if(dirname in WhiteList_del):
                 WhiteList_del.remove(dirname)
@@ -77,6 +83,9 @@ def shouldZip(file):
 
 def loadData():
     #load each global var from disk
+    global WhiteList_del
+    global WhiteList_zip
+    global BlackList
     WhiteList_del = loadObject(".file_compress.data/.WhiteList_del.p")
     WhiteList_zip = loadObject(".file_compress.data/.WhiteList_zip.p")
     BlackList = loadObject(".file_compress.data/.BlackList.p")
@@ -84,11 +93,13 @@ def loadData():
     ZipFileEndings = loadObject(".file_compress.data/.ZipFileEndings.p")
     DelFileEndings = loadObject(".file_compress.data/.DelFileEndings.p")
 
+    datetime.datetime.now()
+
     ZIP_AGE = loadObject(".file_compress.data/.ZIP_AGE.p")
     DEL_AGE = loadObject(".file_compress.data/.DEL_AGE.p")
 
     __RUN = loadObject(".file_compress.data/.__RUN.p")
-
+    print WhiteList_del
 def loadObject(filename):
     #will this correctly load the object?
     try:        
@@ -102,9 +113,9 @@ def loadObject(filename):
 
 
 loadData()
-'''
-for each entry in WhiteList_delete:
-    DelDir(entry)
-for each entry in WhiteList_zip:
+print len(WhiteList_del)
+for entry in WhiteList_del:
+    DelDir(os.getcwd()+entry)
+for entry in WhiteList_zip:
     ZipDir(entry)
-'''
+

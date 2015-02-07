@@ -11,7 +11,7 @@ def saveObject(obj, filename):
 
 
 saveObject([], ".WhiteList_zip.p")
-saveObject(["Test"], ".WhiteList_del.p")
+saveObject([], ".WhiteList_del.p")
 saveObject([], ".BlackList.p")
 
 saveObject(0, ".ZIP_AGE.p")
