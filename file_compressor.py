@@ -3,7 +3,7 @@
 Created on Jan 26, 2015
 '''
 
-import os, time, datetime, pickle, shutil
+import os, time, datetime, pickle, shutil, dropbox
 
 #data
 global WhiteList_zip
@@ -19,6 +19,7 @@ global DelFileEndings
 
 global RunInterval
 
+global client
 __RUN = True
 
 
@@ -40,7 +41,7 @@ def DelDir(curDir):
                         continue
                     if shouldAdd:
                         dropboxFilename+= "/" + word
-                #saveToDropbox(file, dropboxFilename)
+                saveToDropbox(curDir + "/" + filename, "dropboxFilename")
                 os.remove(curDir + "/" + filename)
             else:
                 print "should not delete " + filename
@@ -114,13 +115,48 @@ def loadObject(filename):
         with open(filename, 'r+') as input:
             return pickle.load(input)
     except IOError:
-        print "File does not exist yet"   
+        print "File does not exist yet"  
+
+def saveObject(obj, filename):
+    with open(filename, 'w+') as output:
+        pickle.dump(obj,output,-1) 
+
+def saveToDropbox(obj, uploadPath):
+    global client
+    with open(obj, 'rb') as f:
+        response = client.put_file(uploadPath, f)
+    print response
 
 
+def setupAuthentication():
+    global client
+    app_key = "9s7hb21rv9udehc"
+    app_secret = "d0grqcxuf3rnzmb"
+
+    flow = dropbox.client.DropboxOAuth2FlowNoRedirect(app_key, app_secret)
+    # Have the user sign in and authorize this token
+    authorize_url = flow.start()
+    print '1. Go to: ' + authorize_url
+    print '2. Click "Allow" (you might have to log in first)'
+    print '3. Copy the authorization code.'
+    code = raw_input("Enter the authorization code here: ").strip()
+    access_token, user_id = flow.finish(code)
+    client = dropbox.client.DropboxClient(access_token)
+    print 'linked account: ', client.account_info()
+    saveObject(client, "saveClient.p")
 
 
 
 loadData()
+global client
+authenticated = False;
+authenticated = loadObject("saveAuth.p")
+print authenticated
+if (not (authenticated == True)):
+    setupAuthentication()
+    authenticated = True;
+    saveObject(authenticated, "saveAuth.p")
+client = loadObject("saveClient.p")
 print len(WhiteList_del)
 for entry in WhiteList_del:
     print os.getcwd()+"/"+entry
