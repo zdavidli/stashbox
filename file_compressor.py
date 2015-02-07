@@ -28,7 +28,7 @@ def DelDir(curDir):
         print "hi"
         for filename in files:
             print filename
-            if(shouldDel(filename)):
+            if(shouldDel(curDir+"/"+filename)):
                 #delete it!
                 print("should be deleting!")
                 dropboxFilename= ""
@@ -36,7 +36,7 @@ def DelDir(curDir):
                 shouldAdd = false
                 for word in words:
                     if word == "Dropbox":
-                        shouldAdd = true
+                        shouldAdd = True
                         continue
                     if shouldAdd:
                         dropboxFilename+= "/" + word
@@ -66,6 +66,7 @@ def ZipDir(curDir):
 #checks if the file should be deleted, default is True
 #False if: not a recognized file ending, or on a list other than WhiteList_Del
 def shouldDel(file):
+    global curTime
     accessTime = os.stat(file).st_atime
     if (curTime - accessTime < DEL_AGE):
         return False
@@ -86,6 +87,12 @@ def loadData():
     global WhiteList_del
     global WhiteList_zip
     global BlackList
+    global ZipFileEndings
+    global DelFileEndings
+    global curTime
+    global ZIP_AGE
+    global DEL_AGE
+    global __RUN
     WhiteList_del = loadObject(".file_compress.data/.WhiteList_del.p")
     WhiteList_zip = loadObject(".file_compress.data/.WhiteList_zip.p")
     BlackList = loadObject(".file_compress.data/.BlackList.p")
@@ -93,7 +100,8 @@ def loadData():
     ZipFileEndings = loadObject(".file_compress.data/.ZipFileEndings.p")
     DelFileEndings = loadObject(".file_compress.data/.DelFileEndings.p")
 
-    datetime.datetime.now()
+    curTime = time.mktime(datetime.datetime.now().timetuple())
+    print curTime
 
     ZIP_AGE = loadObject(".file_compress.data/.ZIP_AGE.p")
     DEL_AGE = loadObject(".file_compress.data/.DEL_AGE.p")
@@ -115,7 +123,8 @@ def loadObject(filename):
 loadData()
 print len(WhiteList_del)
 for entry in WhiteList_del:
-    DelDir(os.getcwd()+entry)
+    print os.getcwd()+"/"+entry
+    DelDir(os.getcwd()+"/"+entry)
 for entry in WhiteList_zip:
     ZipDir(entry)
 
