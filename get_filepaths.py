@@ -10,6 +10,10 @@ def get_filepaths(directory):
 
     # Walk the tree.
     for root, directories, files in os.walk(directory):
+        for subdirname in directories
+            dirpath = os.path.join(root, subdirname)
+            file_paths.append(dirpath)
+
         for filename in files:
             # Join the two strings in order to form the full filepath
             filepath = os.path.join(root, filename)
