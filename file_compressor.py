@@ -31,9 +31,8 @@ for each entry in WhiteList_zip:
 def DelDir(curDir):
     for root, directories, files in os.walk(curDir):
         for filename in files:
-            if(shouldDel(filename));
+            if(shouldDel(filename)):
                 #delete it!
-                     #delete the file below this
                 dropboxFilename= ""
                 words = file.split("/")
                 shouldAdd = false
@@ -47,12 +46,20 @@ def DelDir(curDir):
         for dirname in directories:
             if(dirname in WhiteList_del):
                 WhiteList_del.remove(dirname)
-            elif(dirname not in BlackList and dirname not in WhiteList_zip):
+            if(dirname not in BlackList and dirname not in WhiteList_zip):
                 DelDir(dirname)
 
 #similar method for ZipDir
 def ZipDir(curDir):
-
+    for root, directories, files in os.walk(curDir):
+        for filename in files:
+            if(shouldZip(filename)):
+                #zip it
+        for dirname in directories:
+            if(dirname in WhiteList_zip)
+                WhiteList_zip.remove(dirname)
+            if(dirname not in BlackList and dirname not in WhiteList_del):
+                ZipDir(dirname)
 
 #checks if the file should be deleted, default is True
 #False if: not a recognized file ending, or on a list other than WhiteList_Del
