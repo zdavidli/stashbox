@@ -14,8 +14,8 @@ saveObject([], ".WhiteList_zip.p")
 saveObject([], ".WhiteList_del.p")
 saveObject([], ".BlackList.p")
 
-saveObject(127, ".ZIP_AGE.p")
-saveObject(301, ".DEL_AGE.p")
+saveObject(0, ".ZIP_AGE.p")
+saveObject(0, ".DEL_AGE.p")
 
 saveObject([".txt"], ".ZipFileEndings.p")
 saveObject([".txt"], ".DelFileEndings.p")
