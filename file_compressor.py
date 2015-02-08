@@ -1,10 +1,14 @@
- 
+
+
 '''
 Created on Jan 26, 2015
 '''
 
 import os, time, datetime, pickle, shutil, dropbox
 import zipfile
+
+global FILE_PREFIX
+FILE_PREFIX = "/StashBox"
 
 #data
 global WhiteList_zip
@@ -34,19 +38,26 @@ def DelDir(curDir):
                 #delete it!
                 #print("should be deleting!")
                 dropboxFilename= ""
-                words = filename.split("/")
+                words = os.path.join(curDir, filename).split("/")
                 shouldAdd = False
-                for word in words:
+                for idx in range(0,len(words)):
+                    word = words[idx]
+                    #print word
                     if word == "Dropbox":
                         shouldAdd = True
                         continue
                     if shouldAdd:
-                        dropboxFilename+= "/" + word
+                        dropboxFilename+= "/"
+                        #if idx == len(words)-1:
+                            #dropboxFilename+= FILE_PREFIX
+                        dropboxFilename+= word
                 if shouldAdd:
-                    saveToDropbox(curDir + "/" + filename, dropboxFilename)
-                os.remove(curDir + "/" + filename) #THIS SHOULD ONLY OCCUR IF IN DROPBOX, HERE ONLY TEMPORARILY FOR DEBUGGING
-                with open(curDir + "/" + filename + "_inDropbox", 'w') as fout:
-                    fout.write('')
+                    #print "pre-save to dropbox"
+                    saveToDropbox(os.path.join(curDir, filename), FILE_PREFIX+dropboxFilename)
+                    print "dropboxFilename =  "+FILE_PREFIX+dropboxFilename
+                    os.remove(os.path.join(curDir, filename))
+                    with open(os.path.join(curDir, filename + "_inDropbox"), 'w') as fout:
+                        fout.write('')
         #for dirname in directories:
         if os.path.isdir(os.path.join(curDir, item)):
             dirname = item
@@ -94,7 +105,10 @@ def ZipDir(curDir):
 def shouldDel(file):
     #print "shouldDel("+file+")"
     global curTime
+    global DEL_AGE
     accessTime = os.stat(file).st_atime
+    print "age of " + file + "  = " + repr(curTime - accessTime) + "<" 
+    print DEL_AGE
     if (curTime - accessTime < DEL_AGE):
         return False
     if ((file in BlackList) or (file in WhiteList_zip)):
@@ -145,14 +159,12 @@ def loadData():
     BlackList = loadObject(".file_compress.data/.BlackList.p")
 
     #THIS PART WILL BE TAKEN OUT IN THE FINAL VERSION
-    """
-    for item in WhiteList_del:
+    ''' for item in WhiteList_del:
         item = os.path.join(os.getcwd(), item)
     for item in WhiteList_zip:
         item = os.path.join(os.getcwd(), item)
     for item in BlackList:
-        item = os.path.join(os.getcwd(), item)
-    """
+        item = os.path.join(os.getcwd(), item)'''
 
     ZipFileEndings = loadObject(".file_compress.data/.ZipFileEndings.p")
     DelFileEndings = loadObject(".file_compress.data/.DelFileEndings.p")
