@@ -1,0 +1,3 @@
+cd ../..
+python file_compressor.py
+cd Testdirs/TestZipRecurs/

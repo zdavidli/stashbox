@@ -1,0 +1,24 @@
+echo "junk1" > del_this1.txt
+echo "important" > keep_this
+echo "junk2" > del_this2.txt
+
+rm -r Blackdir
+mkdir Blackdir
+cd Blackdir
+
+touch do_not_delete.txt
+touch keep_this1
+cd ..
+
+rm -r Deldir
+mkdir Deldir
+cd Deldir
+
+touch junk21.txt junk22.txt keep_this2
+cd ..
+
+cp .set_settings.py ../../.file_compress.data/ss.py
+cd ../../.file_compress.data/
+python ss.py
+rm ss.py
+cd ../Testdirs/TestDelBlack/

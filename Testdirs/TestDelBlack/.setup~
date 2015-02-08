@@ -1,0 +1,9 @@
+echo "junk1" > del_this1.txt
+echo "important" > keep_this
+echo "junk2" > del_this2.txt
+
+cp .set_settings.py ../../.file_compress.data/ss.py
+cd ../../.file_compress.data/
+python ss.py
+rm ss.py
+cd ../Testdirs/TestZip/

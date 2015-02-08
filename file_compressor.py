@@ -4,6 +4,7 @@ Created on Jan 26, 2015
 '''
 
 import os, time, datetime, pickle, shutil, dropbox
+import zipfile
 
 #data
 global WhiteList_zip
@@ -24,7 +25,7 @@ global __RUN
 
 
 def DelDir(curDir):
-    print "directory = " + curDir
+    #print "directory = " + curDir
     #for root, directories, files in walklevel(curDir, 1):
     for item in os.listdir(curDir):
         filename = item
@@ -67,26 +68,29 @@ def ZipDir(curDir):
                 #print "shouldzip"
                 #os.remove(curDir + "/" + filename) # deletes original copy of files
                 ZipFiles.append(filename)
-        if os.path.isdir(os.path.join(curDir, item)):
-            dirname = item
+
+        dirname = item
+        if os.path.isdir(os.path.join(curDir, dirname)):
             if(dirname in WhiteList_zip):
                 WhiteList_zip.remove(dirname)
             if(dirname not in BlackList and dirname not in WhiteList_del):
-                if (dirname == curDir):
-                    print "the directories are equal"
-                ZipDir(dirname)
+                #if (dirname == curDir):
+                    #print "the directories are equal"
+                ZipDir(os.path.join(curDir, dirname))
 
     #ZIP ALL FILES IN 'ZipFiles'
-    zip = zipfile.ZipFile(os.getcwd() + '.zip', 'w') #creates zip file
+    zip = zipfile.ZipFile(os.path.join(curDir, 'archive.zip'), 'w') #creates zip file
     for item in ZipFiles: #iterates through ZipFile list
-    	zip.write(item) #writes each one in the zip file
+    	zip.write(os.path.join(curDir, item), item) #writes each one in the zip file
     zip.close(); #closes the zipfile
+    for item in ZipFiles:
+        os.remove(os.path.join(curDir, item))
 
 
 #checks if the file should be deleted, default is True
 #False if: not a recognized file ending, or on a list other than WhiteList_Del
 def shouldDel(file):
-    print "shouldDel("+file+")"
+    #print "shouldDel("+file+")"
     global curTime
     accessTime = os.stat(file).st_atime
     if (curTime - accessTime < DEL_AGE):
@@ -204,8 +208,8 @@ client = loadObject("./.file_compress.data/.client.p")
 
 #print len(WhiteList_del)
 for entry in WhiteList_del:
-    print os.getcwd()+"/"+entry
-    DelDir(os.getcwd()+"/"+entry)
+    #print os.getcwd()+"/"+entry
+    DelDir(os.path.join(os.getcwd(), entry))
 for entry in WhiteList_zip:
-    ZipDir(os.getcwd()+"/"+entry)
+    ZipDir(os.path.join(os.getcwd(), entry))
 
