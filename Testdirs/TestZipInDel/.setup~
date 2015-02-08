@@ -1,0 +1,20 @@
+echo "junk1" > del_this1.txt
+echo "important" > keep_this
+echo "junk2" > del_this2.txt
+
+rm -r Deldir Zipdir
+mkdir Deldir Zipdir
+
+cd Deldir
+touch del_this11.txt del_this12.txt keep_this1
+cd ..
+
+cd Zipdir
+touch zip_this21.txt2 zip_this22.txt2 keep_this2
+cd ..
+
+cp .set_settings.py ../../.file_compress.data/ss.py
+cd ../../.file_compress.data/
+python ss.py
+rm ss.py
+cd ../Testdirs/TestZipInDel/

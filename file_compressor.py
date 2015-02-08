@@ -52,7 +52,7 @@ def DelDir(curDir):
             dirname = item
             if(dirname in WhiteList_del):
                 WhiteList_del.remove(dirname)
-            if(dirname not in BlackList and dirname not in WhiteList_zip):
+            if((os.path.join(curDir, dirname) not in BlackList) and (os.path.join(curDir, dirname) not in WhiteList_zip)):
                 DelDir(os.path.join(curDir, dirname))
 
 def ZipDir(curDir):
@@ -73,12 +73,14 @@ def ZipDir(curDir):
         if os.path.isdir(os.path.join(curDir, dirname)):
             if(dirname in WhiteList_zip):
                 WhiteList_zip.remove(dirname)
-            if(dirname not in BlackList and dirname not in WhiteList_del):
+            if((os.path.join(curDir, dirname) not in BlackList) and (os.path.join(curDir, dirname) not in WhiteList_del)):
                 #if (dirname == curDir):
                     #print "the directories are equal"
                 ZipDir(os.path.join(curDir, dirname))
 
     #ZIP ALL FILES IN 'ZipFiles'
+    if (len(ZipFiles) == 0):
+        return
     zip = zipfile.ZipFile(os.path.join(curDir, 'archive.zip'), 'w') #creates zip file
     for item in ZipFiles: #iterates through ZipFile list
     	zip.write(os.path.join(curDir, item), item) #writes each one in the zip file
@@ -141,6 +143,14 @@ def loadData():
     WhiteList_del = loadObject(".file_compress.data/.WhiteList_del.p")
     WhiteList_zip = loadObject(".file_compress.data/.WhiteList_zip.p")
     BlackList = loadObject(".file_compress.data/.BlackList.p")
+
+    #THIS PART WILL BE TAKEN OUT IN THE FINAL VERSION
+    for item in WhiteList_del:
+        item = os.path.join(os.getcwd(), item)
+    for item in WhiteList_zip:
+        item = os.path.join(os.getcwd(), item)
+    for item in BlackList:
+        item = os.path.join(os.getcwd(), item)
 
     ZipFileEndings = loadObject(".file_compress.data/.ZipFileEndings.p")
     DelFileEndings = loadObject(".file_compress.data/.DelFileEndings.p")
@@ -209,7 +219,7 @@ client = loadObject("./.file_compress.data/.client.p")
 #print len(WhiteList_del)
 for entry in WhiteList_del:
     #print os.getcwd()+"/"+entry
-    DelDir(os.path.join(os.getcwd(), entry))
+    DelDir(entry)
 for entry in WhiteList_zip:
-    ZipDir(os.path.join(os.getcwd(), entry))
+    ZipDir(entry)
 
