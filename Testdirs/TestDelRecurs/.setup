@@ -1,0 +1,16 @@
+echo "junk1" > del_this1.txt
+echo "important" > keep_this
+rm -rf junkdir
+mkdir junkdir
+cd junkdir
+echo "junk1.1" > del_this1.1.txt
+echo "important2" > keep_this2
+echo "junk1.2" > del_this1.2.txt
+cd ..
+
+
+cp set_settings.py ../../.file_compress.data/ss.py
+cd ../../.file_compress.data/
+python ss.py
+rm ss.py
+cd ../Testdirs/TestDelRecurs/

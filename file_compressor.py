@@ -20,18 +20,17 @@ global DelFileEndings
 global RunInterval
 
 global client
-__RUN = True
+global __RUN
 
 
 def DelDir(curDir):
-    print "Hi"
+    print "directory = " + curDir
     for root, directories, files in os.walk(curDir):
-        print "hi"
         for filename in files:
-            print filename
+            #print filename
             if(shouldDel(curDir+"/"+filename)):
                 #delete it!
-                print("should be deleting!")
+                #print("should be deleting!")
                 dropboxFilename= ""
                 words = filename.split("/")
                 shouldAdd = False
@@ -41,15 +40,16 @@ def DelDir(curDir):
                         continue
                     if shouldAdd:
                         dropboxFilename+= "/" + word
-                saveToDropbox(curDir + "/" + filename, "dropboxFilename")
-                os.remove(curDir + "/" + filename)
-            else:
-                print "should not delete " + filename
+                if shouldAdd:
+                    saveToDropbox(curDir + "/" + filename, dropboxFilename)
+                os.remove(curDir + "/" + filename) #THIS SHOULD ONLY OCCUR IF IN DROPBOX, HERE ONLY TEMPORARILY FOR DEBUGGING
+
+
         for dirname in directories:
             if(dirname in WhiteList_del):
                 WhiteList_del.remove(dirname)
             if(dirname not in BlackList and dirname not in WhiteList_zip):
-                DelDir(dirname)
+                DelDir(curDir+"/"+dirname)
 
 #similar method for ZipDir
 def ZipDir(curDir):
@@ -70,22 +70,41 @@ def ZipDir(curDir):
 #checks if the file should be deleted, default is True
 #False if: not a recognized file ending, or on a list other than WhiteList_Del
 def shouldDel(file):
+    print "shouldDel("+file+")"
     global curTime
     accessTime = os.stat(file).st_atime
     if (curTime - accessTime < DEL_AGE):
         return False
-    elif ((file in BlackList) or (file in WhiteList_zip)):
+    if ((file in BlackList) or (file in WhiteList_zip)):
         return False
+    
+    validEnding = False
+    for ending in DelFileEndings:
+        if file.endswith(ending):
+            validEnding = True
+            break
+    if (not validEnding):
+        return False
+
     return True
 
 def shouldZip(file):
     accessTime = os.stat(file).st_atime
     if (curTime - accessTime < ZIP_AGE):
         return False
-    elif (file.endswith("zip")): # we don't want to look at already zipped files!
+    elif (file.endswith(".zip")): # we don't want to look at already zipped files!
         return False
     elif ((file in BlackList) or (file in WhiteList_del)):
         return False
+
+    validEnding = False
+    for ending in ZipFileEndings:
+        if file.endswith(ending):
+            validEnding = True
+            break
+    if (not validEnding):
+        return False
+
     return True
 
 def loadData():
@@ -107,15 +126,16 @@ def loadData():
     DelFileEndings = loadObject(".file_compress.data/.DelFileEndings.p")
 
     curTime = time.mktime(datetime.datetime.now().timetuple())
-    print curTime
+    #print curTime
 
     ZIP_AGE = loadObject(".file_compress.data/.ZIP_AGE.p")
     DEL_AGE = loadObject(".file_compress.data/.DEL_AGE.p")
 
     __RUN = loadObject(".file_compress.data/.__RUN.p")
-    print WhiteList_del
+    #print WhiteList_del
+
+
 def loadObject(filename):
-    #will this correctly load the object?
     try:        
         with open(filename, 'r+') as input:
             return pickle.load(input)
@@ -130,7 +150,7 @@ def saveToDropbox(obj, uploadPath):
     global client
     with open(obj, 'rb') as f:
         response = client.put_file(uploadPath, f)
-    print response
+    #print response
 
 
 def setupAuthentication():
@@ -151,21 +171,22 @@ def setupAuthentication():
     access_token, user_id = flow.finish(code)
     client = dropbox.client.DropboxClient(access_token)
     print 'linked account: ', client.account_info()
-    saveObject(client, "saveClient.p")
+    saveObject(client, ".file_compress.data/.client.p")
 
 
 
 loadData()
 global client
 authenticated = False;
-authenticated = loadObject("saveAuth.p")
-print authenticated
-if (not (authenticated == True)):
+authenticated = loadObject("./.file_compress.data/.authenticated.p")
+#print authenticated
+if (not authenticated):
     setupAuthentication()
     authenticated = True;
-    saveObject(authenticated, "saveAuth.p")
-client = loadObject("saveClient.p")
-print len(WhiteList_del)
+    saveObject(authenticated, "./.file_compress.data/.authenticated.p")
+client = loadObject("./.file_compress.data/.client.p")
+
+#print len(WhiteList_del)
 for entry in WhiteList_del:
     print os.getcwd()+"/"+entry
     DelDir(os.getcwd()+"/"+entry)
