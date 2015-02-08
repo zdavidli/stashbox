@@ -25,10 +25,12 @@ global __RUN
 
 def DelDir(curDir):
     print "directory = " + curDir
-    for root, directories, files in os.walk(curDir):
-        for filename in files:
+    #for root, directories, files in walklevel(curDir, 1):
+    for item in os.listdir(curDir):
+        filename = item
+        if os.path.isfile(os.path.join(curDir, item)):
             #print filename
-            if(shouldDel(curDir+"/"+filename)):
+            if(shouldDel(curDir+"/"+item)):
                 #delete it!
                 #print("should be deleting!")
                 dropboxFilename= ""
@@ -44,12 +46,13 @@ def DelDir(curDir):
                     saveToDropbox(curDir + "/" + filename, dropboxFilename)
                 os.remove(curDir + "/" + filename) #THIS SHOULD ONLY OCCUR IF IN DROPBOX, HERE ONLY TEMPORARILY FOR DEBUGGING
 
-
-        for dirname in directories:
+        #for dirname in directories:
+        if os.path.isdir(os.path.join(curDir, item)):
+            dirname = item
             if(dirname in WhiteList_del):
                 WhiteList_del.remove(dirname)
             if(dirname not in BlackList and dirname not in WhiteList_zip):
-                DelDir(curDir+"/"+dirname)
+                DelDir(os.path.join(curDir, dirname))
 
 #similar method for ZipDir
 def ZipDir(curDir):
