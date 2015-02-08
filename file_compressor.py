@@ -23,7 +23,6 @@ global RunInterval
 global client
 global __RUN
 
-
 def DelDir(curDir):
     #print "directory = " + curDir
     #for root, directories, files in walklevel(curDir, 1):
@@ -46,7 +45,8 @@ def DelDir(curDir):
                 if shouldAdd:
                     saveToDropbox(curDir + "/" + filename, dropboxFilename)
                 os.remove(curDir + "/" + filename) #THIS SHOULD ONLY OCCUR IF IN DROPBOX, HERE ONLY TEMPORARILY FOR DEBUGGING
-
+                with open(curDir + "/" + filename + "_inDropbox", 'w') as fout:
+                    fout.write('')
         #for dirname in directories:
         if os.path.isdir(os.path.join(curDir, item)):
             dirname = item
@@ -145,12 +145,12 @@ def loadData():
     BlackList = loadObject(".file_compress.data/.BlackList.p")
 
     #THIS PART WILL BE TAKEN OUT IN THE FINAL VERSION
-    for item in WhiteList_del:
+   ''' for item in WhiteList_del:
         item = os.path.join(os.getcwd(), item)
     for item in WhiteList_zip:
         item = os.path.join(os.getcwd(), item)
     for item in BlackList:
-        item = os.path.join(os.getcwd(), item)
+        item = os.path.join(os.getcwd(), item)'''
 
     ZipFileEndings = loadObject(".file_compress.data/.ZipFileEndings.p")
     DelFileEndings = loadObject(".file_compress.data/.DelFileEndings.p")
