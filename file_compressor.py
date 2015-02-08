@@ -58,15 +58,17 @@ def ZipDir(curDir):
     #for root, directories, files in os.walk(curDir):
     ZipFiles = []
     for item in os.listdir(curDir):
-    	filename = item
+    	filename = item        
     	if os.path.isfile(os.path.join(curDir, filename)):
+            if (item in WhiteList_zip):
+                WhiteList_zip.remove(item)
             if(shouldZip(curDir + "/" + filename)):
                 #shutil.make_archive(filename, "zip", os.getcwd()) # creates a zip file
                 #print "shouldzip"
                 #os.remove(curDir + "/" + filename) # deletes original copy of files
                 ZipFiles.append(filename)
         if os.path.isdir(os.path.join(curDir, item)):
-        	dirname = item
+            dirname = item
             if(dirname in WhiteList_zip):
                 WhiteList_zip.remove(dirname)
             if(dirname not in BlackList and dirname not in WhiteList_del):
@@ -76,10 +78,8 @@ def ZipDir(curDir):
 
     #ZIP ALL FILES IN 'ZipFiles'
     zip = zipfile.ZipFile(os.getcwd() + '.zip', 'w') #creates zip file
-    for item in ZipFiles #iterates through ZipFile list
+    for item in ZipFiles: #iterates through ZipFile list
     	zip.write(item) #writes each one in the zip file
-    	if (item is in WhiteList_zip):
-    		WhiteList_zip.remove(item)
     zip.close(); #closes the zipfile
 
 
