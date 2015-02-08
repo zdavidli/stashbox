@@ -1,16 +1,14 @@
-# HopHacks_Spring2015
-HopHacks Spring 2015 Group
+# StashBox
 
-Idea
+Anyone with who has used an electronic device knows what it feels like to be bogged down by photos. StashBox can let you keep these memories safe and off your device, allowing more storage space. It will improve disk usage as a whole.
 
-1. *Dropbox – auto-compress unused files
-  
-  a. If the file is relatively old, compress it
-  
-  b. If the file is very old, delete it (keep it on cloud)
-  
-  c. Limit it to certain folders (in Dropbox especially)
-  
-  d. maybe send usage emails about what’s changed
-  
-  e. maybe have different settings by device (Delete files more aggressively 
+Our target user is anyone who uses a computer, because the limitations of physical storage space affect everyone. A StashBox user chooses a set of directories that StashBox acts on. In these directories, if a file's last access time is a certain length of time, the file will be compressed to take up less space. If it's an even longer time, the user has the option to delete the file and upload it to Dropbox, so that the photo will be preserved on the cloud but will not take up local storage space.
+
+Created using Python 2.7 and GUi using Tkinter. 
+
+Built by
+* David Li
+* Derek Modzelewski
+* Alex Irikura
+* Hugh Han
+
