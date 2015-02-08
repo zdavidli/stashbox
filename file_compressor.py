@@ -92,7 +92,7 @@ def ZipDir(curDir):
     #ZIP ALL FILES IN 'ZipFiles'
     if (len(ZipFiles) == 0):
         return
-    zip = zipfile.ZipFile(os.path.join(curDir, 'archive.zip'), 'w') #creates zip file
+    zip = zipfile.ZipFile(os.path.join(curDir, '_archive.zip'), 'w') #creates zip file
     for item in ZipFiles: #iterates through ZipFile list
     	zip.write(os.path.join(curDir, item), item) #writes each one in the zip file
     zip.close(); #closes the zipfile
