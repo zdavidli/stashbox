@@ -4,13 +4,13 @@ import Tkinter, tkFileDialog
 
 w1=[]
 
-def choose_dir():
+def choose_dir(var_msg):
     root = Tkinter.Tk()
-    dirname = tkFileDialog.askdirectory(parent=root,initialdir="~/",title='Please select a directory')
+    dirname = tkFileDialog.askdirectory(parent=root,initialdir="~/",title=var_msg) 
     if len(dirname ) > 0:
-        print "You chose %s" % dirname
         w1.append(dirname)
-    print w1
+        return dirname
+
 
 if __name__ == '__main__':
-    choose_dir()
+    choose_dir("Hello")
