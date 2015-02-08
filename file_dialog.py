@@ -9,6 +9,7 @@ def choose_dir(var_msg):
     dirname = tkFileDialog.askdirectory(parent=root,initialdir="~/",title=var_msg) 
     if len(dirname ) > 0:
         w1.append(dirname)
+
         return dirname
 
 
