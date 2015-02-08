@@ -54,21 +54,34 @@ def DelDir(curDir):
             if(dirname not in BlackList and dirname not in WhiteList_zip):
                 DelDir(os.path.join(curDir, dirname))
 
-#similar method for ZipDir
 def ZipDir(curDir):
-    for root, directories, files in os.walk(curDir):
-        for filename in files:
+    #for root, directories, files in os.walk(curDir):
+    ZipFiles = []
+    for item in os.listdir(curDir):
+    	filename = item
+    	if os.path.isfile(os.path.join(curDir, filename)):
             if(shouldZip(curDir + "/" + filename)):
-                shutil.make_archive(filename, "zip", os.getcwd()) # creates a zip file
-                print "shouldzip"
-                os.remove(curDir + "/" + filename) # deletes original copy of files
-        for dirname in directories:
+                #shutil.make_archive(filename, "zip", os.getcwd()) # creates a zip file
+                #print "shouldzip"
+                #os.remove(curDir + "/" + filename) # deletes original copy of files
+                ZipFiles.append(filename)
+        if os.path.isdir(os.path.join(curDir, item)):
+        	dirname = item
             if(dirname in WhiteList_zip):
                 WhiteList_zip.remove(dirname)
             if(dirname not in BlackList and dirname not in WhiteList_del):
                 if (dirname == curDir):
                     print "the directories are equal"
                 ZipDir(dirname)
+
+    #ZIP ALL FILES IN 'ZipFiles'
+    zip = zipfile.ZipFile(os.getcwd() + '.zip', 'w') #creates zip file
+    for item in ZipFiles #iterates through ZipFile list
+    	zip.write(item) #writes each one in the zip file
+    	if (item is in WhiteList_zip):
+    		WhiteList_zip.remove(item)
+    zip.close(); #closes the zipfile
+
 
 #checks if the file should be deleted, default is True
 #False if: not a recognized file ending, or on a list other than WhiteList_Del
