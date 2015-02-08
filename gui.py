@@ -1,5 +1,7 @@
 import file_dialog
 import sys
+import file_compressor
+
 from Tkinter import *
 import tkMessageBox
 # TODO Make sure zip_list, del_list, blacklist have no conflicts
@@ -59,6 +61,11 @@ def get_dellist():
 def get_blacklist():
     return blacklist
 
+def save_lists():
+    file_compressor.saveObject(zip_list, ".file_compress.data/.WhiteList_zip.p")
+    file_compressor.saveObject(del_list, ".file_compress.data/.WhiteList_del.p")
+    file_compressor.saveObject(blacklist, ".file_compress.data/.BlackList.p")
+
 
 if __name__ == "__main__":
     set_ziplist()
@@ -67,6 +74,6 @@ if __name__ == "__main__":
     print get_ziplist()
     print get_dellist()
     print get_blacklist()
-
+    save_lists()
 
 
