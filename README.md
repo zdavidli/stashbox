@@ -1,4 +1,6 @@
-# StashBox
+![Alt text](/img/stashbox.png "StashBox")
+
+# StashBox #
 
 Anyone with who has used an electronic device knows what it feels like to be bogged down by photos. StashBox can let you keep these memories safe and off your device, allowing more storage space. It will improve disk usage as a whole.
 
@@ -6,9 +8,11 @@ Our target user is anyone who uses a computer, because the limitations of physic
 
 Created using Python 2.7 and GUI using Tkinter. 
 
-Built by
+###### Interface ######
+![Alt text](/img/sample.png "StashBox")
+
+Built by:
 * David Li
 * Derek Modzelewski
 * Alex Irikura
 * Hugh Han
-
