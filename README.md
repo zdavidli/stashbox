@@ -1,6 +1,4 @@
-![Alt text](/img/stashbox.png "StashBox")
-
-# StashBox #
+<img src="/img/stashbox.png" width="200px" align="left"/><br/>
 
 Anyone with who has used an electronic device knows what it feels like to be bogged down by photos. StashBox can let you keep these memories safe and off your device, allowing more storage space. It will improve disk usage as a whole.
 
